@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="images/logo.png" sizes="192x192" type="image/png">
+    <title>Checkout - Sirius Florist</title>
+    <link rel="stylesheet" href="checkout.css">
+</head>
+
+<body>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-home">
+                <a href="home.html">
+                    <div class="logo-home"></div>
+                </a>
+            </div>
+            <div class="nav-cart">
+                <a href="cart.html"> keranjang </a>
+            </div>
+            <div class="nav-help">
+                <a href="help.html"> bantuan </a>
+            </div>
+            <div class="nav-about">
+                <a href="about.html"> tentang </a>
+            </div>
+        </div>
+        <div class="nav-containersocial">
+            <a href="profile.html">
+                <div class="avatar"></div>
+            </a>
+        </div>
+    </nav>
+
+    <div class="checkout-container">
+        <div class="checkout-items">
+            <h2>Checkout</h2>
+            <div class="item-list">
+                <!-- Items will be dynamically added here -->
+            </div>
+            <p>Total: <span id="total-price">Rp 0</span></p>
+        </div>
+        <div class="checkout-address">
+            <h2>Alamat</h2>
+            <textarea id="delivery-address" rows="4" placeholder="Masukkan alamatmu disini..."></textarea>
+            <button class="order-btn">Order - Saldo SF</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Sirius Florist. All rights reserved.</p>
+        <nav>
+            <a href="https://www.youtube.com/watch?v=-cl_3_vLDd8">Terms of Service</a>
+            <a href="https://www.youtube.com/watch?v=-cl_3_vLDd8">Privacy Policy</a>
+        </nav>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const totalPriceSpan = document.getElementById('total-price');
+            const itemsInCart = JSON.parse(localStorage.getItem('cartItems')) || [];
+            const itemPrices = {
+                "Bunga 1": 180000,
+                "Bunga 2": 120000,
+                "Bunga 3": 140000
+            };
+
+            // Render items in cart
+            const itemContainer = document.querySelector('.item-list');
+            let total = 0;
+            itemsInCart.forEach(item => {
+                const itemPrice = itemPrices[item.itemName] * item.quantity;
+                total += itemPrice;
+                const itemHTML = `
+                    <div class="checkout-item">
+                        <div>${item.itemName}</div>
+                        <div>Quantity: ${item.quantity}</div>
+                        <div>Price: Rp ${itemPrice}</div>
+                    </div>
+                `;
+                itemContainer.innerHTML += itemHTML;
+            });
+
+            // Update total price
+            totalPriceSpan.innerText = `Rp ${total.toLocaleString()}`;
+
+            // Order button event listener
+            const orderBtn = document.querySelector('.order-btn');
+            orderBtn.addEventListener('click', function () {
+                const deliveryAddress = document.getElementById('delivery-address').value;
+                if (deliveryAddress.trim() === '') {
+                    alert("Minim alamatnya.");
+                } else {
+                    let balance = parseFloat(localStorage.getItem('balance')) || 0;
+                    if (balance < total) {
+                        alert("Saldo tidak cukup.");
+                    } else {
+                        balance -= total;
+                        localStorage.setItem('balance', balance);
+                        alert("Sukses! Pesanan akan segera dikirim.");
+                        localStorage.removeItem('cartItems'); // Clear cart after placing order
+                        window.location.href = 'home.html'; // Redirect to home page
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

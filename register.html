@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Register</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="register.css" />
+  </head>
+  <body>
+    <div class="background-overlay"></div>
+    <div class="background"></div>
+    <div class="background"></div>
+    <div class="container">
+      <div class="center">
+          <h1>Register</h1>
+          <form action="" method="POST">
+                <div class="txt_field">
+                  <input type="username" id="username" name="username">
+                  <span></span>
+                  <label>Username</label>
+              </div>
+              <div class="txt_field">
+                  <input type="text" id="email" name="text">
+                  <span></span>
+                  <label>Email</label>
+              </div>
+              <div class="txt_field">
+                  <input type="password" id="password" name="password">
+                  <span></span>
+                  <label>Password</label>
+              </div>
+              <input id="register" name="submit" type="button" value="Register">
+              <div class="login_link">
+                  Udah punya akun? <a href="login.html">Login</a>
+              </div>
+          </form>
+      </div>
+    </div>
+  </body>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+    import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // kredensial firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDwuZu9HEt8SblsldmCrGTSyUW3rDehVvc",
+      authDomain: "sirius-florist.firebaseapp.com",
+      projectId: "sirius-florist",
+      storageBucket: "sirius-florist.appspot.com",
+      messagingSenderId: "441867445813",
+      appId: "1:441867445813:web:fa59a265d10dcc1b1df37c"
+    };
+  
+    // nyalain firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth();
+
+    register.addEventListener('click',(e) => {
+
+      var username = document.getElementById('username').value;
+      var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // register
+          const user = userCredential.user;
+          set(ref(database, 'users/' + user.uid),{
+            username: username,
+            email:email
+          })
+          window.location.href = "login.html";
+        })
+        .catch((error) => { 
+          const errorCode = error.code;
+          const errorMessage = error.message;
+
+          alert(errorMessage);
+        });
+      
+    });
+  </script>
+</html>

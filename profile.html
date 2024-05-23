@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="images/logo.png" sizes="192x192" type="image/png">
+    <title>Profile - Sirius Florist</title>
+    <link rel="stylesheet" href="profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-home">
+                <a href="home.html">
+                    <div class="logo-home"></div>
+                </a>
+            </div>
+            <div class="nav-cart">
+                <a href="cart.html"> keranjang </a>
+            </div>
+            <div class="nav-help">
+                <a href="help.html"> bantuan </a>
+            </div>
+            <div class="nav-about">
+                <a href="about.html"> tentang </a>
+            </div>
+        </div>
+        <div class="nav-containersocial">
+            <a href="profile.html">
+                <div class="avatar"></div>
+            </a>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-box">
+            <div class="profile-info">
+                <div class="profile-avatar"></div>
+                <div class="profile-details">
+                    <div class="profile-username" id="username">Loading...</div>
+                    <div class="profile-balance" id="balance">Loading...</div>
+                </div>
+            </div>
+            <div class="profile-options">
+                <div class="option">
+                    <a href="top-up.html">Top Up</a>
+                </div>
+                <div class="option">
+                    <a href="login.html">Log Out</a>
+                </div>
+            </div>
+        </div>
+        <div class="recent-orders">
+            <h2>Recent Orders</h2>
+            <div id="order-list">
+                <!-- Recent orders will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Sirius Florist. All rights reserved.</p>
+        <nav>
+            <a href="https://www.youtube.com/watch?v=-cl_3_vLDd8">Terms of Service</a>
+            <a href="https://www.youtube.com/watch?v=-cl_3_vLDd8">Privacy Policy</a>
+        </nav>
+    </footer>
+
+    <script>
+        // Retrieve balance and recent orders from local storage and update the profile
+        document.addEventListener('DOMContentLoaded', function () {
+            const balance = parseFloat(localStorage.getItem('balance')) || 500000; // Default balance: Rp 500,000
+            const balanceElement = document.getElementById('balance');
+            balanceElement.textContent = `Balance: Rp ${balance.toLocaleString()}`;
+
+            // Retrieve and display recent orders
+            const orders = JSON.parse(localStorage.getItem('recentOrders')) || [];
+            const orderList = document.getElementById('order-list');
+
+            if (orders.length === 0) {
+                orderList.innerHTML = '<p>No recent orders.</p>';
+            } else {
+                orders.forEach(order => {
+                    const orderItem = document.createElement('div');
+                    orderItem.className = 'order-item';
+                    orderItem.innerHTML = `
+                        <div>Order ID: ${order.id}</div>
+                        <div>Date: ${order.date}</div>
+                        <div>Total: Rp ${order.total.toLocaleString()}</div>
+                    `;
+                    orderList.appendChild(orderItem);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #FF9210;
+        color: #fff;
+        height: 75px;
+    }
+
+    .nav-container {
+        display: flex;
+        align-items: center;
+        margin-left: 20px;
+        width: 80px; /* Adjust width to accommodate the logo size */
+    }
+
+    .nav a {
+        text-decoration: none;
+        color: #fff;
+        display: block;
+        margin: 0 20px;
+    }
+
+    .logo-home {
+        background-image: url(images/logo.png);
+        background-size: contain;
+        width: 45px;
+        height: 45px;
+        display: block;
+        transition: ease-in 100ms;
+    }
+
+    .logo-home:hover {
+        width: 50px; /* Increase the size on hover */
+        height: 50px;
+    }
+
+    .nav-containersocial {
+        display: flex;
+        align-items: center;
+        margin-right: 40px;
+    }
+
+    .nav-containersocial a {
+        margin-left: 15px;
+    }
+
+    .avatar {
+        background-image: url(images/avatar.png);
+        background-size: contain;
+        width: 45px;
+        height: 45px;
+        display: block;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .avatar:hover {
+        border: 1px solid #fff;
+        transition: ease-in 100ms;
+    }
+
+    .profile-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .profile-box {
+        background-color: #f9f9f9;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .profile-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-avatar {
+        background-image: url(images/avatar.png);
+        background-size: contain;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-right: 20px;
+    }
+
+    .profile-details {
+        color: #333;
+    }
+
+    .profile-username {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .profile-balance {
+        font-size: 18px;
+    }
+
+    .profile-options {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .option {
+        margin-bottom: 20px;
+    }
+
+    .option a {
+        text-decoration: none;
+        color: #333;
+        font-size: 18px;
+    }
+
+    .option a:hover {
+        color: #FF9210;
+    }
+
+    .recent-orders {
+        margin-top: 20px;
+        max-width: 400px;
+        width: 100%;
+    }
+
+    .order-item {
+        background-color: #fff;
+        padding: 15px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    footer {
+        margin-top: auto;
+        background-color: #FF9210;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+
+    footer a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+</style>

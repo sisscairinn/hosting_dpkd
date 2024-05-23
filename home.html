@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="images/logo.png" sizes="192x192" type="image/png">
+    <title>Sirius Florist</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+
+<body>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-home">
+                <a href="home.html">
+                    <div class="logo-home"></div>
+                </a>
+            </div>
+            <div class="nav-cart">
+                <a href="cart.html"> keranjang </a>
+            </div>
+            <div class="nav-help">
+                <a href="help.html"> bantuan </a>
+            </div>
+            <div class="nav-about">
+                <a href="about.html"> tentang </a>
+            </div>
+        </div>
+        <div class="nav-search">
+            <input type="text" id="searchInput" placeholder="Cari produk...">
+            <button onclick="search()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="nav-containersocial">
+            <a href="profile.html">
+                <div class="avatar"></div>
+            </a>
+        </div>
+    </nav>
+
+    <div class="banner">
+        <div class="banner-overlay"></div>
+        <div class="banner-text">
+            <h1>welcome!</h1>
+            <p>get your loved ones some flowers</p>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card">
+            <a href="flower1.html">
+                <img src="images/flower1.png" alt="Card 1">
+                <div class="card-content">
+                    <div class="card-title">Bunga 1</div>
+                    <div class="card-description">Deskripsi!</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="flower2.html">
+                <img src="images/flower2.png" alt="Card 2">
+                <div class="card-content">
+                    <div class="card-title">Bunga 2</div>
+                    <div class="card-description">Deskripsi!</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="flower3.html">
+                <img src="images/flower3.png" alt="Card 3">
+                <div class="card-content">
+                    <div class="card-title">Bunga 3</div>
+                    <div class="card-description">Deskripsi!</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="card">
+            <a href="https://api.whatsapp.com/send/?phone=6285876022223&text&type=phone_number&app_absent=0">
+                <img src="images/flower-custom.png" alt="Card 4">
+                <div class="card-content">
+                    <div class="card-title">Custom Bouquet</div>
+                    <div class="card-description">Klik disini kalo kamu mau custom bungamu sendiri! (wa)</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Sirius FLorist. All rights reserved.</p>
+        <nav>
+            <a href="https://www.youtube.com/watch?v=-cl_3_vLDd8">Terms of Service</a>
+            <a href="https://www.youtube.com/watch?v=-cl_3_vLDd8">Privacy Policy</a>
+        </nav>
+    </footer>
+
+
+</body>
+
+<script>
+    function search() {
+        var input = document.getElementById('searchInput').value.toLowerCase();
+        var cards = document.querySelectorAll('.card');
+
+        cards.forEach(function (card) {
+            var title = card.querySelector('.card-title').textContent.toLowerCase();
+            var description = card.querySelector('.card-description').textContent.toLowerCase();
+
+            if (title.includes(input) || description.includes(input)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</html>

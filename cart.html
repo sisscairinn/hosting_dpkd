@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="images/logo.png" sizes="192x192" type="image/png">
+    <title>Cart - Sirius Florist</title>
+    <link rel="stylesheet" href="cart.css">
+</head>
+
+<body>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="nav-home">
+                <a href="home.html">
+                    <div class="logo-home"></div>
+                </a>
+            </div>
+            <div class="nav-cart">
+                <a href="cart.html"> keranjang </a>
+            </div>
+            <div class="nav-help">
+                <a href="help.html"> bantuan </a>
+            </div>
+            <div class="nav-about">
+                <a href="about.html"> tentang </a>
+            </div>
+        </div>
+        <div class="nav-containersocial">
+            <a href="profile.html">
+                <div class="avatar"></div>
+            </a>
+        </div>
+    </nav>
+
+    <div class="cart-container">
+        <h1>Keranjang</h1>
+        <div class="item-card">
+            <input type="checkbox" class="item-checkbox">
+            <div class="item-image">
+                <img src="images/flower2.png" alt="Flower 2">
+            </div>
+            <div class="item-details">
+                <div class="item-title">Bunga 2</div>
+                <div class="item-description">Deskripsi!</div>
+                <div class="item-price">Rp 120.000</div>
+                <div class="quantity-controls">
+                    <button class="quantity-btn minus">-</button>
+                    <input type="number" class="quantity-input" value="1">
+                    <button class="quantity-btn plus">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="item-card">
+            <input type="checkbox" class="item-checkbox">
+            <div class="item-image">
+                <img src="images/flower1.png" alt="Flower 1">
+            </div>
+            <div class="item-details">
+                <div class="item-title">Bunga 1</div>
+                <div class="item-description">Deskripsi!</div>
+                <div class="item-price">Rp 180.000</div>
+                <div class="quantity-controls">
+                    <button class="quantity-btn minus">-</button>
+                    <input type="number" class="quantity-input" value="1">
+                    <button class="quantity-btn plus">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="item-card">
+            <input type="checkbox" class="item-checkbox">
+            <div class="item-image">
+                <img src="images/flower3.png" alt="Flower 3">
+            </div>
+            <div class="item-details">
+                <div class="item-title">Bunga 3</div>
+                <div class="item-description">Deskripsi!</div>
+                <div class="item-price">Rp 140.000</div>
+                <div class="quantity-controls">
+                    <button class="quantity-btn minus">-</button>
+                    <input type="number" class="quantity-input" value="1">
+                    <button class="quantity-btn plus">+</button>
+                </div>
+            </div>
+        </div>
+        <div class="cart-total">
+            <p>Total: <span id="total-price">Rp 120.000</span></p>
+            <a href="checkout.html">
+                <button class="checkout-btn">Proceed to Checkout</button>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Sirius FLorist. All rights reserved.</p>
+        <nav>
+            <a href="https://www.youtube.com/watch?v=-cl_3_vLDd8">Terms of Service</a>
+            <a href="https://www.youtube.com/watch?v=-cl_3_vLDd8">Privacy Policy</a>
+        </nav>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+            const minusBtns = document.querySelectorAll('.quantity-btn.minus');
+            const plusBtns = document.querySelectorAll('.quantity-btn.plus');
+            const totalPriceSpan = document.getElementById('total-price');
+            const itemPrices = document.querySelectorAll('.item-price');
+            const checkboxes = document.querySelectorAll('.item-checkbox');
+    
+            // Load saved items and quantities from localStorage
+            loadSavedItems();
+    
+            updateTotalPrice();
+    
+            minusBtns.forEach((btn, index) => {
+                btn.addEventListener('click', function () {
+                    if (quantityInputs[index].value > 1) {
+                        quantityInputs[index].value--;
+                        updateTotalPrice();
+                        saveItems(); // Save items after quantity change
+                    }
+                });
+            });
+    
+            plusBtns.forEach((btn, index) => {
+                btn.addEventListener('click', function () {
+                    quantityInputs[index].value++;
+                    updateTotalPrice();
+                    saveItems(); // Save items after quantity change
+                });
+            });
+    
+            quantityInputs.forEach(input => {
+                input.addEventListener('input', function () {
+                    if (input.value < 1) {
+                        alert("Harus lebih dari 0!");
+                        input.value = 1;
+                    }
+                    updateTotalPrice();
+                    saveItems(); // Save items after quantity change
+                });
+            });
+    
+            checkboxes.forEach((checkbox, index) => {
+                checkbox.addEventListener('change', function () {
+                    updateTotalPrice();
+                    saveItems(); // Save items after checkbox change
+                });
+            });
+    
+            function updateTotalPrice() {
+                let total = 0;
+                itemPrices.forEach((price, index) => {
+                    if (checkboxes[index].checked) {
+                        total += parseInt(price.innerText.replace(/\D/g, '')) * parseInt(quantityInputs[index].value);
+                    }
+                });
+                totalPriceSpan.innerText = `Rp ${formatNumber(total)}`;
+            }
+    
+            function formatNumber(number) {
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            }
+    
+            function saveItems() {
+                const items = [];
+                checkboxes.forEach((checkbox, index) => {
+                    if (checkbox.checked) {
+                        const itemName = checkbox.parentElement.querySelector('.item-title').innerText;
+                        const quantity = quantityInputs[index].value;
+                        items.push({ itemName, quantity });
+                    }
+                });
+                localStorage.setItem('cartItems', JSON.stringify(items));
+            }
+    
+            function loadSavedItems() {
+                const savedItems = JSON.parse(localStorage.getItem('cartItems'));
+                if (savedItems) {
+                    savedItems.forEach(savedItem => {
+                        const itemName = savedItem.itemName;
+                        const quantity = savedItem.quantity;
+                        const correspondingCheckbox = [...document.querySelectorAll('.item-title')].find(el => el.innerText === itemName).parentElement.parentElement.querySelector('.item-checkbox');
+                        const correspondingQuantityInput = [...document.querySelectorAll('.item-title')].find(el => el.innerText === itemName).parentElement.parentElement.querySelector('.quantity-input');
+                        correspondingCheckbox.checked = true;
+                        correspondingQuantityInput.value = quantity;
+                    });
+                }
+            }
+        });
+    </script>
+    
+
+</body>
+
+</html>
